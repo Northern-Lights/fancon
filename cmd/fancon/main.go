@@ -8,6 +8,8 @@ import (
 
 const interval = 2 * time.Second
 
+var ticker time.Ticker
+
 var (
 	stateLo = State{
 		Lo:    0,
@@ -44,7 +46,7 @@ func run() {
 	}
 
 	// TODO: stop this on interrupt
-	ticker := time.NewTicker(interval)
+	ticker = *time.NewTicker(interval)
 
 	for range ticker.C {
 		temp := GetCoreTemp()
