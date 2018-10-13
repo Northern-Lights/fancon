@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const interval = 2 * time.Second
+
 var (
 	stateLo = State{
 		Lo:    0,
@@ -35,22 +37,22 @@ func run() {
 
 	// state := GetState(GetCoreTemp())
 	state := stateHi
-	log.Println("Current state:", state)
+	// log.Println("Current state:", state)
 	err := SetByState(state)
 	if err != nil {
 		log.Fatalln("Couldn't set initial fan speed:", err)
 	}
 
 	// TODO: stop this on interrupt
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(interval)
 
 	for range ticker.C {
 		temp := GetCoreTemp()
-		log.Println("Current temp:", temp)
+		// log.Println("Current temp:", temp)
 		next := state.NextState(temp)
-		log.Println("Next state:", next)
+		// log.Println("Next state:", next)
 		if next != state {
-			log.Println("Setting fan due to state change")
+			// log.Println("Setting fan due to state change")
 			err := SetByState(next)
 			if err != nil {
 				log.Println("Unable to set fan speed:", err)
