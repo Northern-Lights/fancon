@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// Temp is an int representing a temperature
 type Temp int
 
 // GetCoreTemp returns the greatest temperature over all the cores
@@ -22,10 +23,11 @@ func GetCoreTemp() Temp {
 			log.Printf("Couldn't open temp for %s: %v", path, err)
 			goto end
 		}
+		defer f.Close()
 
 		n, err = f.Read(buf[:])
 		if err != nil {
-			log.Printf("Coludn't read temp for %s: %v", path, err)
+			log.Printf("Couldn't read temp for %s: %v", path, err)
 			goto end
 		}
 
