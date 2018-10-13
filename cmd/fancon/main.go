@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"math"
+	"os"
+	"os/signal"
 	"time"
 )
 
@@ -72,6 +74,13 @@ func main() {
 	}
 	defer SetManual(false) // TODO: really need to log or something if failure
 
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, os.Kill)
+
 	log.Println("Starting fan control...")
-	run()
+	go run()
+	<-c
+	log.Println("Received signal; stopping fancon")
+	ticker.Stop()
+	log.Println("fancon exiting")
 }
