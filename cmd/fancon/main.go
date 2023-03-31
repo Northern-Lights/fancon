@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -75,7 +76,7 @@ func main() {
 	defer SetManual(false) // TODO: really need to log or something if failure
 
 	c := make(chan os.Signal)
-	signal.Notify(c, os.Interrupt, os.Kill)
+	signal.Notify(c, os.Interrupt, os.Kill, syscall.SIGTERM)
 
 	log.Println("Starting fan control...")
 	go run()
